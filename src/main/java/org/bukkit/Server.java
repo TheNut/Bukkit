@@ -2,11 +2,10 @@
 package org.bukkit;
 
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-
 import java.util.List;
 
 import org.bukkit.plugin.PluginManager;
+import org.bukkit.scheduler.BukkitScheduler;
 
 /**
  * Represents a server implementation
@@ -32,10 +31,17 @@ public interface Server {
      * @return An array of Players that are currently online
      */
     public Player[] getOnlinePlayers();
-    
+
+    /**
+     * Get the maximum amount of players which can login to this server
+     *
+     * @return The amount of players this server allows
+     */
+    public int getMaxPlayers();
+
     /**
      * Broadcast a message to all players.
-     * 
+     *
      * @param message the message
      * @return the number of players
      */
@@ -71,60 +77,52 @@ public interface Server {
     public PluginManager getPluginManager();
 
     /**
+     * Gets the Scheduler for managing scheduled events
+     *
+     * @return Scheduler for this Server instance
+     */
+    public BukkitScheduler getScheduler();
+
+    /**
      * Gets a list of all worlds on this server
      *
-     * @return An array of worlds
+     * @return A list of worlds
      */
-    public World[] getWorlds();
+    public List<World> getWorlds();
 
     /**
-     * Gets the in-game time on the server (in hours*1000)
+     * Creates or loads a world with the given name.
+     * If the world is already loaded, it will just return the equivalent of
+     * getWorld(name)
      *
-     * @return The current time in hours*1000
+     * @param name Name of the world to load
+     * @param environment Environment type of the world
+     * @return Newly created or loaded World
      */
-    public long getTime();
+    public World createWorld(String name, World.Environment environment);
 
     /**
-     * Sets the in-game time on the server (in hours*1000)
+     * Creates or loads a world with the given name.
+     * If the world is already loaded, it will just return the equivalent of
+     * getWorld(name)
      *
-     * @param time The time to set the in-game time to (in hours*1000)
+     * @param name Name of the world to load
+     * @param environment Environment type of the world
+     * @param generator ChunkGenerator to use in the construction of the new world
+     * @return Newly created or loaded World
      */
-    public void setTime(long time);
+    public World createWorld(String name, World.Environment environment, ChunkGenerator generator);
+
+    /**
+     * Gets the world with the given name
+     *
+     * @param name Name of the world to retrieve
+     * @return World with the given name, or null if none exists
+     */
+    public World getWorld(String name);
 
     /**
      * Reloads the server, refreshing settings and plugin information
      */
     public void reload();
-
-    /**
-     * Create a new Material of type <tt>type</tt>
-     * 
-     * This material is only guaranteed to have the basic functionality of any material.
-     * It may have extra functionality, but this needs to be checked for using <tt>instanceof</tt>.
-     * For example, to check if a material is colorable, you must use:
-     * <tt>if (material instanceof org.bukkit.material.Colorable) </tt>
-     * 
-     * @param type the type of this material
-     * @return
-     */
-    public Material newMaterial(Material.Type type);
-
-    /**
-     * Similar to <tt>newMaterial(Material.Type type)</tt> but uses a lookup against a name.
-     * 
-     * This can be used to get materials through their enum name, or to get custom materials that are server specific.
-     * @param name
-     * @return
-     */
-    public Material newMaterial(String name);
-    
-    /**
-     * Create a stack of Material.
-     * 
-     * @param material the Material of the ItemStack.
-     * @param amount the number of Material in this stack.
-     * 
-     * @return a new ItemStack as specified, or null if it was not created.
-     */
-    public ItemStack newItemStack(Material material, int amount);
 }
