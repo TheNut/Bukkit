@@ -7,6 +7,9 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import org.bukkit.permission.RootPermissionDescription;
+import org.bukkit.permission.PermissionDescriptionException;
+import org.bukkit.permission.PermissionDescriptionNodeException;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.SafeConstructor;
 
@@ -24,6 +27,7 @@ public final class PluginDescriptionFile {
     private ArrayList<String> authors = new ArrayList<String>();
     private String website = null;
     private boolean database = false;
+    private RootPermissionDescription permissions = null;
 
     @SuppressWarnings("unchecked")
     public PluginDescriptionFile(final InputStream stream) throws InvalidDescriptionException {
@@ -129,6 +133,10 @@ public final class PluginDescriptionFile {
         this.database = database;
     }
 
+    public RootPermissionDescription getPermissions() {
+        return permissions;
+    }
+
     private void loadMap(Map<String, Object> map) throws InvalidDescriptionException {
         try {
             name = map.get("name").toString();
@@ -216,6 +224,19 @@ public final class PluginDescriptionFile {
                 authors.addAll(extra);
             } catch (ClassCastException ex) {
                 throw new InvalidDescriptionException(ex, "authors are of wrong type");
+            }
+        }
+
+        if (map.containsKey("permissions")) {
+            try {
+                Map<String, Object> perms = (Map<String, Object>)map.get("permissions");
+                this.permissions = new RootPermissionDescription(perms);
+            } catch (ClassCastException ex) {
+                throw new InvalidDescriptionException(ex, "permissions are of wrong type");
+            } catch (PermissionDescriptionException ex) {
+                throw new InvalidDescriptionException(ex, "permissions are invalid");
+            } catch (PermissionDescriptionNodeException ex) {
+                throw new InvalidDescriptionException(ex, "permissions are invalid");
             }
         }
     }

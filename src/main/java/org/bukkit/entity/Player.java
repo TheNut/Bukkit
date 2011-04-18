@@ -2,14 +2,19 @@
 package org.bukkit.entity;
 
 import java.net.InetSocketAddress;
+import java.util.List;
+
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
+import org.bukkit.permission.PermissionGroup;
+import org.bukkit.permission.Permissions;
+import org.bukkit.permission.Rank;
 
 /**
  * Represents a player, connected or not
  *
  */
-public interface Player extends HumanEntity, CommandSender {
+public interface Player extends HumanEntity, CommandSender, Permissions, Rank {
     /**
      * Checks if this player is currently online
      *
@@ -135,4 +140,21 @@ public interface Player extends HumanEntity, CommandSender {
      * @deprecated This method should not be relied upon as it is a temporary work-around for a larger, more complicated issue.
      */
     public void updateInventory();
+
+    /**
+     * Retrieve the list of all groups associated with this player.
+     * 
+     * These groups determine the permissions of the player. Groups that occur later
+     * in the list take precedence over earlier ones.
+     * 
+     * Every Player is also a member of their own group, whose permissions override every
+     * other group they are a member of. This is known as the override group.
+     * 
+     * This list is mutable, and should be used to add or remove profiles to the group.
+     * It is imperative that you synchronize on this list if you iterate over it.
+     * 
+     * @return A thread safe list of PermissionGroups that apply to this player.
+     */
+    List<PermissionGroup> getGroups();
+
 }
