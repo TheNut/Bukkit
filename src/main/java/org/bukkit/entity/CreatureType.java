@@ -4,42 +4,40 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
-public enum CreatureType {
+public enum MobType {
     CHICKEN("Chicken"),
     COW("Cow"),
     CREEPER("Creeper"),
     GHAST("Ghast"),
-    GIANT("Giant"),
-    MONSTER("Monster"),
+    // TODO add GIANT mob type
     PIG("Pig"),
     PIG_ZOMBIE("PigZombie"),
     SHEEP("Sheep"),
     SKELETON("Skeleton"),
-    SLIME("Slime"),
     SPIDER("Spider"),
-    SQUID("Squid"),
     ZOMBIE("Zombie"),
-    WOLF("Wolf");
+    SQUID("Squid");
 
     private String name;
-
-    private static final Map<String, CreatureType> mapping = new HashMap<String, CreatureType>();
+    
+    private static final Map<String, MobType> mapping
+            = new HashMap<String, MobType>();
 
     static {
-        for (CreatureType type : EnumSet.allOf(CreatureType.class)) {
+        for (MobType type : EnumSet.allOf(MobType.class)) {
             mapping.put(type.name, type);
         }
     }
 
-    private CreatureType(String name) {
+    private MobType(String name) {
         this.name = name;
     }
 
     public String getName() {
         return name;
     }
-
-    public static CreatureType fromName(String name) {
+    
+    public static MobType fromName(String name) {
         return mapping.get(name);
     }
 }

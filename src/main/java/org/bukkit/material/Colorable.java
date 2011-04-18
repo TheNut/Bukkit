@@ -3,24 +3,21 @@ package org.bukkit.material;
 import org.bukkit.DyeColor;
 
 /**
- * An object that can be colored.
- * 
- * @author Cogito
- *
+ * Represents a Material that can be colored
  */
-public interface Colorable {
+public interface Colorable extends MaterialComplex{
 
     /**
-     * Gets the color of this object.
-     * 
-     * @return The DyeColor of this object.
+     * Gets the current color of this dye
+     *
+     * @return DyeColor of this dye
      */
     public DyeColor getColor();
 
     /**
-     * Sets the color of this object to the specified DyeColor.
-     * 
-     * @param color The color of the object, as a DyeColor.
+     * Sets the color of this dye
+     *
+     * @param color New color of this dye
      */
     public void setColor(DyeColor color);
 

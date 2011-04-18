@@ -4,7 +4,6 @@ package org.bukkit.block;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.material.MaterialData;
 
 /**
  * Represents a captured state of a block, which will not change automatically.
@@ -17,24 +16,22 @@ import org.bukkit.material.MaterialData;
 public interface BlockState {
     /**
      * Gets the block represented by this BlockState
-     *
+     * 
      * @return Block that this BlockState represents
      */
     Block getBlock();
 
     /**
-     * Gets the metadata for this block
+     * Gets a Material with the same properties as this block.
+     * 
+     * This material can be manipulated (depending on its type) and then used to set
+     * the material of the block.
      *
-     * @return block specific metadata
+     * @return a Material with the same properties as this block.
+     * 
+     * @see setMaterial()
      */
-    MaterialData getData();
-
-    /**
-     * Gets the type of this block
-     *
-     * @return block type
-     */
-    Material getType();
+    Material getMaterial();
 
     /**
      * Gets the type-id of this block
@@ -86,25 +83,11 @@ public interface BlockState {
     Chunk getChunk();
 
     /**
-     * Sets the metadata for this block
-     *
-     * @param data New block specific metadata
-     */
-    void setData(MaterialData data);
-
-    /**
      * Sets the type of this block
      *
      * @param type Material to change this block to
      */
-    void setType(Material type);
-
-    /**
-     * Sets the type-id of this block
-     *
-     * @param type Type-Id to change this block to
-     */
-    boolean setTypeId(int type);
+    void setMaterial(Material material);
 
     /**
      * Attempts to update the block represented by this state, setting it to the
@@ -112,7 +95,7 @@ public interface BlockState {
      * <br />
      * This has the same effect as calling update(false). That is to say,
      * this will not modify the state of a block if it is no longer the same
-     * type as it was when this state was taken. It will return false in this
+     * base material type as it was when this state was taken. It will return false in this
      * eventuality.
      *
      * @return true if the update was successful, otherwise false
@@ -125,7 +108,7 @@ public interface BlockState {
      * new values as defined by this state. <br />
      * <br />
      * Unless force is true, this will not modify the state of a block if it is
-     * no longer the same type as it was when this state was taken. It will return
+     * no longer the same base material type as it was when this state was taken. It will return
      * false in this eventuality.<br />
      * <br />
      * If force is true, it will set the type of the block to match the new state,
@@ -135,6 +118,4 @@ public interface BlockState {
      * @return true if the update was successful, otherwise false
      */
     boolean update(boolean force);
-
-    public byte getRawData();
 }

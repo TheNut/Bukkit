@@ -4,6 +4,7 @@ import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.Location;
+import org.bukkit.block.BlockState;
 
 /**
  * Represents a block. This is a live object, and only one Block may exist for
@@ -12,12 +13,6 @@ import org.bukkit.Location;
  * block which will not be modified.
  */
 public interface Block {
-    /**
-     * Gets the metadata for this block
-     *
-     * @return block specific metadata
-     */
-    byte getData();
 
     /**
      * Gets the block at the given face<br />
@@ -66,22 +61,15 @@ public interface Block {
     Block getRelative(BlockFace face);
 
     /**
-     * Gets the type of this block
+     * Get a Material instance that has the same properties as this block.
      *
-     * @return block type
+     * @return a Material with the same properties as this block.
      */
-    Material getType();
-
-    /**
-     * Gets the type-id of this block
-     *
-     * @return block type-id
-     */
-    int getTypeId();
-
+    Material getMaterial();
+    
     /**
      * Gets the light level between 0-15
-     *
+     * 
      * @return light level
      */
     byte getLightLevel();
@@ -130,32 +118,13 @@ public interface Block {
     Chunk getChunk();
 
     /**
-     * Sets the metadata for this block
+     * Sets the material of this block to be the same as the given material.
      *
-     * @param data New block specific metadata
+     * @param material Material to change this block to
+     * 
+     * @return if the server set this block to be of this Material
      */
-    void setData(byte data);
-    
-    void setData(byte data, boolean applyPhyiscs);
-
-    /**
-     * Sets the type of this block
-     *
-     * @param type Material to change this block to
-     */
-    void setType(Material type);
-
-    /**
-     * Sets the type-id of this block
-     *
-     * @param type Type-Id to change this block to
-     * @return whether the block was changed
-     */
-    boolean setTypeId(int type);
-    
-    boolean setTypeId(int type, boolean applyPhysics);
-    
-    boolean setTypeIdAndData(int type, byte data, boolean applyPhyiscs);
+    boolean setMaterial(Material material);
 
     /**
      * Gets the face relation of this block compared to the given block<br />
@@ -192,47 +161,4 @@ public interface Block {
      * @return Biome type containing this block
      */
     Biome getBiome();
-
-    /**
-     * Returns true if the block is being powered by Redstone.
-     *
-     * @return
-     */
-    boolean isBlockPowered();
-
-    /**
-     * Returns true if the block is being indirectly powered by Redstone.
-     *
-     * @return
-     */
-    boolean isBlockIndirectlyPowered();
-
-    /**
-     * Returns true if the block face is being powered by Redstone.
-     *
-     * @return
-     */
-    boolean isBlockFacePowered(BlockFace face);
-
-    /**
-     * Returns true if the block face is being indirectly powered by Redstone.
-     *
-     * @return
-     */
-    boolean isBlockFaceIndirectlyPowered(BlockFace face);
-   
-    /**
-     * Returns the redstone power being provided to this block face
-     * 
-     * @param face the face of the block to query or BlockFace.SELF for the block itself
-     * @return 
-     */
-    int getBlockPower(BlockFace face);
-
-    /**
-     * Returns the redstone power being provided to this block
-     * 
-     * @return 
-     */
-    int getBlockPower();
 }

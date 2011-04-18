@@ -2,28 +2,20 @@ package org.bukkit.event.block;
 
 import org.bukkit.block.Block;
 import org.bukkit.Material;
+import org.bukkit.event.Event;
 
 /**
  * Thrown when a block physics check is called
- *
+ * 
  * @author Dinnerbone
  */
 public class BlockPhysicsEvent extends BlockEvent {
-    private final int changed;
+    private final Material changed;
     private boolean cancel = false;
 
-    public BlockPhysicsEvent(final Block block, final int changed) {
-        super(Type.BLOCK_PHYSICS, block);
+    public BlockPhysicsEvent(final Event.Type type, final Block block, final Material changed) {
+        super(type, block);
         this.changed = changed;
-    }
-
-    /**
-     * Gets the type of block that changed, causing this event
-     *
-     * @return Changed block's type id
-     */
-    public int getChangedTypeId() {
-        return changed;
     }
 
     /**
@@ -31,8 +23,8 @@ public class BlockPhysicsEvent extends BlockEvent {
      *
      * @return Changed block's type
      */
-    public Material getChangedType() {
-        return Material.getMaterial(changed);
+    public Material getChangedMaterial() {
+        return changed;
     }
 
     /**

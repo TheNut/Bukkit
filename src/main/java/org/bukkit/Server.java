@@ -1,15 +1,12 @@
 
 package org.bukkit;
 
-import com.avaje.ebean.config.ServerConfig;
 import org.bukkit.entity.Player;
-import java.util.List;
-import java.util.logging.Logger;
-import org.bukkit.command.PluginCommand;
+import org.bukkit.inventory.ItemStack;
 
-import org.bukkit.command.CommandSender;
+import java.util.List;
+
 import org.bukkit.plugin.PluginManager;
-import org.bukkit.scheduler.BukkitScheduler;
 
 /**
  * Represents a server implementation
@@ -35,46 +32,10 @@ public interface Server {
      * @return An array of Players that are currently online
      */
     public Player[] getOnlinePlayers();
-
-    /**
-     * Get the maximum amount of players which can login to this server
-     *
-     * @return The amount of players this server allows
-     */
-    public int getMaxPlayers();
-
-    /**
-     * Get the game port that the server runs on
-     *
-     * @return The port number of this servers
-     */
-    public int getPort();
-
-    /**
-     * Get the IP that this server is bound to or empty string if not specified
-     *
-     * @return The IP string that this server is bound to, otherwise empty string
-     */
-    public String getIp();
-
-    /**
-     * Get the name of this server
-     *
-     * @return The name of this server
-     */
-    public String getServerName();
-
-    /**
-     * Get an ID of this server. The ID is a simple generally alphanumeric
-     * ID that can be used for uniquely identifying this server.
-     *
-     * @return The ID of this server
-     */
-    public String getServerId();
-
+    
     /**
      * Broadcast a message to all players.
-     *
+     * 
      * @param message the message
      * @return the number of players
      */
@@ -110,49 +71,25 @@ public interface Server {
     public PluginManager getPluginManager();
 
     /**
-     * Gets the Scheduler for managing scheduled events
-     *
-     * @return Scheduler for this Server instance
-     */
-    public BukkitScheduler getScheduler();
-
-    /**
      * Gets a list of all worlds on this server
      *
-     * @return A list of worlds
+     * @return An array of worlds
      */
-    public List<World> getWorlds();
+    public World[] getWorlds();
 
     /**
-     * Creates or loads a world with the given name.
-     * If the world is already loaded, it will just return the equivalent of
-     * getWorld(name)
+     * Gets the in-game time on the server (in hours*1000)
      *
-     * @param name Name of the world to load
-     * @param environment Environment type of the world
-     * @return Newly created or loaded World
+     * @return The current time in hours*1000
      */
-    public World createWorld(String name, World.Environment environment);
+    public long getTime();
 
     /**
-     * Creates or loads a world with the given name.
-     * If the world is already loaded, it will just return the equivalent of
-     * getWorld(name)
+     * Sets the in-game time on the server (in hours*1000)
      *
-     * @param name Name of the world to load
-     * @param environment Environment type of the world
-     * @param seed Seed value to create the world with
-     * @return Newly created or loaded World
+     * @param time The time to set the in-game time to (in hours*1000)
      */
-    public World createWorld(String name, World.Environment environment, long seed);
-
-    /**
-     * Gets the world with the given name
-     *
-     * @param name Name of the world to retrieve
-     * @return World with the given name, or null if none exists
-     */
-    public World getWorld(String name);
+    public void setTime(long time);
 
     /**
      * Reloads the server, refreshing settings and plugin information
@@ -160,38 +97,34 @@ public interface Server {
     public void reload();
 
     /**
-     * Returns the primary logger associated with this server instance
-     *
-     * @return Logger associated with this server
+     * Create a new Material of type <tt>type</tt>
+     * 
+     * This material is only guaranteed to have the basic functionality of any material.
+     * It may have extra functionality, but this needs to be checked for using <tt>instanceof</tt>.
+     * For example, to check if a material is colorable, you must use:
+     * <tt>if (material instanceof org.bukkit.material.Colorable) </tt>
+     * 
+     * @param type the type of this material
+     * @return
      */
-    public Logger getLogger();
+    public Material newMaterial(Material.Type type);
 
     /**
-     * Gets a {@link PluginCommand} with the given name or alias
-     *
-     * @param name Name of the command to retrieve
-     * @return PluginCommand if found, otherwise null
+     * Similar to <tt>newMaterial(Material.Type type)</tt> but uses a lookup against a name.
+     * 
+     * This can be used to get materials through their enum name, or to get custom materials that are server specific.
+     * @param name
+     * @return
      */
-    public PluginCommand getPluginCommand(String name);
-
+    public Material newMaterial(String name);
+    
     /**
-     * Writes loaded players to disk
+     * Create a stack of Material.
+     * 
+     * @param material the Material of the ItemStack.
+     * @param amount the number of Material in this stack.
+     * 
+     * @return a new ItemStack as specified, or null if it was not created.
      */
-    public void savePlayers();
-
-    /**
-     * Dispatches a command on the server, and executes it if found.
-     *
-     * @param cmdLine command + arguments. Example: "test abc 123"
-     * @return targetFound returns false if no target is found.
-     * @throws CommandException Thrown when the executor for the given command fails with an unhandled exception
-     */
-    public boolean dispatchCommand(CommandSender sender, String commandLine);
-
-    /**
-     * Populates a given {@link ServerConfig} with values attributes to this server
-     *
-     * @param config ServerConfig to populate
-     */
-    public void configureDbConfig(ServerConfig config);
+    public ItemStack newItemStack(Material material, int amount);
 }
