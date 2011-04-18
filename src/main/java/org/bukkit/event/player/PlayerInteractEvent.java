@@ -9,7 +9,7 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.block.Action;
 
 /**
- *
+ * 
  * @author durron597
  *
  */
@@ -18,34 +18,25 @@ public class PlayerInteractEvent extends PlayerEvent implements Cancellable {
     protected Action action;
     protected Block blockClicked;
     protected BlockFace blockFace;
-
-    private Result useClickedBlock;
+    
+    private Result useInteractedBlock;
     private Result useItemInHand;
 
-    public PlayerInteractEvent(Player who, Action action, ItemStack item, Block clickedBlock, BlockFace clickedFace) {
-        super(Type.PLAYER_INTERACT, who);
+    public PlayerInteractEvent(Type type, Action action, ItemStack item, Block block, BlockFace face, Player who) {
+        super(type, who);
+        this.blockFace = face;
         this.action = action;
         this.item = item;
-        this.blockClicked = clickedBlock;
-        this.blockFace = clickedFace;
-
-        useItemInHand = Result.DEFAULT;
-        useClickedBlock = clickedBlock == null ? Result.DENY : Result.ALLOW;
+        this.blockClicked = block;
+        useItemInHand = item == null ? Result.DENY : Result.ALLOW;
+        useInteractedBlock = block == null ? Result.DENY : Result.ALLOW;
     }
 
-    /**
-     * Returns the action type
-     *
-     * @return Action returns the type of interaction
-     */
-    public Action getAction() {
-        return action;
-    }
 
     /**
      * Gets the cancellation state of this event. Set to true if you
      * want to prevent buckets from placing water and so forth
-     *
+     * 
      * @return boolean cancellation state
      */
     public boolean isCancelled() {
@@ -64,72 +55,53 @@ public class PlayerInteractEvent extends PlayerEvent implements Cancellable {
      */
     public void setCancelled(boolean cancel) {
         setUseInteractedBlock(cancel ? Result.DENY : useInteractedBlock() == Result.DENY ? Result.DEFAULT : useInteractedBlock());
-        setUseItemInHand(cancel ? Result.DENY : useItemInHand() == Result.DENY ? Result.DEFAULT : useItemInHand());
     }
-
+    
     /**
      * Returns the item in hand represented by this event
-     *
+     * 
      * @return ItemStack the item used
      */
     public ItemStack getItem() {
         return this.item;
     }
-
+    
     /**
      * Convenience method. Returns the material of the item represented by this
      * event
-     *
+     * 
      * @return Material the material of the item used
      */
     public Material getMaterial() {
-        if (!hasItem()) return Material.AIR;
-
+        if (this.item == null) return Material.AIR;
+        
         return item.getType();
     }
-
-    /**
-     * Check if this event involved a block
-     * 
-     * return boolean true if it did
-     */
-    public boolean hasBlock() {
-        return this.blockClicked != null;
-    }
-
-    /**
-     * Check if this event involved an item
-     * 
-     * return boolean true if it did
-     */
-    public boolean hasItem() {
-        return this.item != null;
-    }
-
+    
     /**
      * Convenience method to inform the user whether this was a block placement
      * event.
-     *
+     * 
      * @return boolean true if the item in hand was a block
      */
-    public boolean isBlockInHand() {
-        if (!hasItem()) return false;
-
+    public boolean isBlock() {
+        if (item == null) return false;
+        
         return item.getType().isBlock();
     }
-
+    
     /**
      * Returns the clicked block
-     *
+     * 
      * @return Block returns the block clicked with this item.
      */
-    public Block getClickedBlock() {
+    public Block getBlockClicked() {
         return blockClicked;
     }
-
+    
     /**
      * Returns the face of the block that was clicked
-     *
+     * 
      * @return BlockFace returns the face of the block that was clicked
      */
     public BlockFace getBlockFace() {
@@ -142,14 +114,14 @@ public class PlayerInteractEvent extends PlayerEvent implements Cancellable {
      * @return the action to take with the interacted block
      */
     public Result useInteractedBlock() {
-        return useClickedBlock;
+        return useInteractedBlock;
     }
 
     /**
-     * @param useInteractedBlock the action to take with the interacted block
+     * @param useInteractedBlock the action to take with the interacted block 
      */
     public void setUseInteractedBlock(Result useInteractedBlock) {
-        this.useClickedBlock = useInteractedBlock;
+        this.useInteractedBlock = useInteractedBlock;
     }
 
     /**

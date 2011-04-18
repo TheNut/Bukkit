@@ -9,6 +9,7 @@ import org.bukkit.inventory.ItemStack;
 /**
  * Not implemented yet
  */
+@Deprecated
 public class BlockPlaceEvent extends BlockEvent implements Cancellable {
     protected boolean cancel;
     protected boolean canBuild;
