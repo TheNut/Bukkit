@@ -2,19 +2,17 @@
 package org.bukkit.entity;
 
 import java.net.InetSocketAddress;
-import java.util.List;
-
+import org.bukkit.Achievement;
 import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Statistic;
 import org.bukkit.command.CommandSender;
-import org.bukkit.permission.PermissionGroup;
-import org.bukkit.permission.Permissions;
-import org.bukkit.permission.Rank;
 
 /**
  * Represents a player, connected or not
  *
  */
-public interface Player extends HumanEntity, CommandSender, Permissions, Rank {
+public interface Player extends HumanEntity, CommandSender {
     /**
      * Checks if this player is currently online
      *
@@ -142,19 +140,41 @@ public interface Player extends HumanEntity, CommandSender, Permissions, Rank {
     public void updateInventory();
 
     /**
-     * Retrieve the list of all groups associated with this player.
-     * 
-     * These groups determine the permissions of the player. Groups that occur later
-     * in the list take precedence over earlier ones.
-     * 
-     * Every Player is also a member of their own group, whose permissions override every
-     * other group they are a member of. This is known as the override group.
-     * 
-     * This list is mutable, and should be used to add or remove profiles to the group.
-     * It is imperative that you synchronize on this list if you iterate over it.
-     * 
-     * @return A thread safe list of PermissionGroups that apply to this player.
+     * Awards this player the given achievement
+     *
+     * @param achievement Achievement to award
      */
-    List<PermissionGroup> getGroups();
+    public void awardAchievement(Achievement achievement);
 
+    /**
+     * Increments the given statistic for this player
+     *
+     * @param statistic Statistic to increment
+     */
+    public void incrementStatistic(Statistic statistic);
+
+    /**
+     * Increments the given statistic for this player
+     *
+     * @param statistic Statistic to increment
+     * @param amount Amount to increment this statistic by
+     */
+    public void incrementStatistic(Statistic statistic, int amount);
+
+    /**
+     * Increments the given statistic for this player for the given material
+     *
+     * @param statistic Statistic to increment
+     * @param material Material to offset the statistic with
+     */
+    public void incrementStatistic(Statistic statistic, Material material);
+
+    /**
+     * Increments the given statistic for this player for the given material
+     *
+     * @param statistic Statistic to increment
+     * @param material Material to offset the statistic with
+     * @param amount Amount to increment this statistic by
+     */
+    public void incrementStatistic(Statistic statistic, Material material, int amount);
 }
